@@ -1,0 +1,470 @@
+trading
+
+SRE AFL BK FAS HRS PH RSG SNPS
+AIZ TSS PFE WM GPN MGM MHK MSI NVDA ORCL PCLN PFG PHM PRU RJF ROK ROP STI STT TSS V XEL
+SYK CBOE BA SSO CHTR DE DGX DOW EBAY HON SHW UNH ZTS
+
+
+SRE* AFL* AIZ BK* FAS* TSS PFE@SMALL WM GPN@MKT HRS* MGM MHK MSI NVDA ORCL@48 PCLN PFG PH* PHM PRU RJF ROK ROP RSG*
+SNPS* STI STT TSS  V XEL
+SYK CBOE@77 BA SSO CHTR DE@115 DGX@100 DOW@64 EBAY@35 HON watchSHW watchUNH watchZTS
+
+
+   Stocks go up based on their people's perception of their future prospects.
+   You need to look for clues indicating people's trust in the stock.
+   Here are some clues:
+   a. Price is going up on higher volumes -> green bars on big volumes
+   b. Price is not coming down much on lower volumes -> red bars on low volume
+   c. Price is not coming down on higer volume also -> check high-low of high volume red bar is within the high-low of prior green bars. In such case you can think of absorbing power of the buyers rather than giving up on the sellers.
+   d. Recent volume buildup -> indicating increased buying, 5day SMA going up
+   e. Pick only those stocks that are in general up trend - price above 50d, 200d SMA
+
+2. Write a program to screen it:
+  a. Doesn't work if you see big jumps in the stock price (like earnings announcements)
+     Avoid such stocks from the screen.
+
+
+Market makers will push up price on low price stocks to keep it aritificially higher to make their sales... same might work to some extent in high-volume shares as well.
+
+
+Stock risk & Market risk
+Look for weekly pivot points.. if the market is not going in your way, dont trade/buy new positions.
+  you might continue to manage existing positions or stopped out of them.
+
+Pivot points are weekly candle showing break of higher-high as well as higher-low.
+  until that is in place, dont be in the market.
+
+cup and handle... the handle forms with increasing volume. and falls on decreasing volume.
+  Look for pivot point formation in the handle. The close should be above the high of the high of the bottom of the handle and low above the low of the bottom handle ... preferrably with volume.
+
+Stops... if the price closes below the price of the pivot bottom, we sell the next day.
+
+
+Patterns:
+   cup and handle
+   ,  some run up and holding on sideways on the top half of the up candles...
+   , pullback (sharp pullback on decreasing volumen and pivot point on the next candle)
+   , pause after large move up.
+
+
+When stock goes to new high, there is nobody losing money. Once people started to making money, greed starts to take over.
+People think they dont want to sell because this going to go forever...
+With no resistance up, you can expect it to make fairly new highs pretty quickly.
+
+
+Why support & resistance works?
+  When the price falls most people won't sell. they think if they what they paid for, they want to get out of that.
+  This puts pressure on recovery.
+
+
+If you have a losing stock, ask yourself if you got all the money back and would you be willing to buy the stock? If not sell it.
+
+
+After you put on a trade, your emotions change with the formation of each bar. This happens especially even before the next candle closes!.
+as the bars go up and down during the smaller timeframes, if you are constantly watching, it is very difficutl to handle oneself in potential losing positions. Most likely you would be shaken out of the trade.
+
+You should develop skill to group several candled to a single candle and estimate the bullishness/bearishness of that group of candles.
+it will psychologically you will be more ready.
+
+
+Track how much time it is taking to get the closing point.. you made some money and perhaps it tokk 26 candles.. and there are up and down days.
+These trades tend to watch the candles unfold and continue to analyze what it means to their trade.
+This constant analysis can lead the trader to change his behavior and modify the trade in some fashion.
+
+Dont live candle by candle.
+many good trades dont go to target immediately. This impatience can lead to modifying / exiting the trade.
+Candlestick math can help overcome this from psychological perspective.
+
+learn to deal with noise.
+
+
+Bullish/Bearish belt hold line -- A long bullish candled that opens on its low and closes near its high without creating a large shadow.
+Hammer -- small real body, either bullish/bearish with a long lower shadow that is 2 times the height of the real body, with little or no shadow at the top. Possible reversal after extended bearish move.
+Shooting star -- same as above,, long upper shadow and little or no bottom shadow. Possible reversal signal after extended bullish move.
+
+Barish harami -- large real body bullish candle followed by an inside bar small bearish candle.
+   normally considered bearish pattern after an uptrend or extended bullish move. It is essentially a shooting star.
+Bullish Harami  essentially a hammer
+
+Dark cloud cover --  a large real body bullish candle followed by bearish candle with gap open higher and closes back down well inside first bar's real body.
+       -- essentially a shooting star.
+Piercing pattern  -- just a hammer.
+
+  close past 50% point.
+
+  https://www.youtube.com/watch?v=kB901og8xag
+
+
+
+https://www.youtube.com/watch?v=WcdCpC8rHxM
+
+
+https://www.youtube.com/watch?v=Hy7wgDD5NI8
+
+
+
+https://finance.google.com/finance/historical?cid=665712&startdate=Jan+1%2C+2005&enddate=Aug+5%2C+2017&num=30&ei=lCGFWZmtGIKzmAH_4piYCg
+ht
+tp://finance.google.com/finance/historical?q=NYSEARCA%3AADP&startdate=Jan+1%2C+2005&enddate=Aug+5%2C+2017&output=csv
+https://www.google.com/finance/historical?q=NYSEARCA%3A{0}&output=csv
+
+create table stocks(
+symbol varchar2(6),
+day    date default sysdate,
+open   number,
+close  number,
+high   number,
+close  number,
+volume number
+) tablespace data1;
+
+create unique index idx1_stocks on stocks(symbol, day) tablespace index1 compute statistics;
+
+
+create table stg_stocks(
+symbol varchar2(10),
+day    varchar2(20),
+open   varchar2(10),
+high  varchar2(10),
+low   varchar2(10),
+close  varchar2(10),
+volume varchar2(15)
+) tablespace data1;
+
+
+OPTIONS (SKIP=1)
+ unrecoverable load data
+ APPEND
+ PRESERVE BLANKS
+into table stg_stocks
+ fields terminated by "," optionally enclosed by '"' TRAILING NULLCOLS
+(symbol, day, open, high, low, close, volume)
+
+sqlldr userid=adprtest@crp01d/adprtest control=adprm.ctl data=CountryCode_Temp.csv direct=true bad=adprm.bad log=adprm.log
+
+
+drop table bkp_stocks;
+create table bkp_stocks tablespace data1 as select * from stocks;
+truncate table stocks;
+insert /*+ append */ into stocks
+select symbol, to_date(day, 'DD-MON-RR'), open, high, low, close, volume from stg_stocks
+where (regexp_like(volume, '[0-9,.]')
+  and regexp_like(high, '[0-9,.]')
+  and regexp_like(low, '[0-9,.]'));
+commit;
+exec dbms_stats.gather_table_stats(ownname => 'ADPRTEST', tabname => 'STOCKS', estimate_percent => 100, -
+           method_opt => 'FOR ALL INDEXED COLUMNS SIZE 1', cascade => TRUE, degree => 8);
+
+alter table stocks parallel (degree 4);
+
+
+create tables dates (dt date) tablespace data1;
+insert into dates
+SELECT TRUNC (SYSDATE - ROWNUM) dt
+  FROM DUAL CONNECT BY ROWNUM < 366*18
+union
+SELECT TRUNC (SYSDATE - ROWNUM) dt
+  FROM DUAL CONNECT BY ROWNUM < 366*1;
+commit;
+
+create index idx_dates on dates(dt) tablespace index1 compute statistics;
+
+
+
+with A as (select * from (
+select  symbol, day, open, high, low, close, (close-prevclose) change,
+trunc(100*(close-prevclose)/prevclose, 1) pctchange,
+volume, sma5, sma20
+from (
+select
+  symbol, day, open, high, low, close,
+  lag(close,1) over (order by symbol,day) prevclose,
+  volume,
+  trunc(avg(volume)
+    OVER (order by symbol,day rows between 4 preceding and current row))
+    as sma5,
+  trunc(avg(volume)
+    OVER (order by symbol,day rows between 9 preceding and current row))
+    as sma20,
+  trunc(avg(close)
+    OVER (order by symbol,day rows between 49 preceding and current row))
+    as psma50,
+  trunc(avg(close)
+    OVER (order by symbol,day rows between 199 preceding and current row))
+    as psma200,
+  row_number() over (partition by symbol order by day desc) rn
+from stocks where 1=1 and symbol='APH'
+)
+where 1=1
+and ((volume > sma5) or (volume > sma20))
+and ((close > psma50) and (close > psma200))
+order by symbol, day desc
+) --where rownum < 30
+)
+select
+(case
+ when (pctchange > 0 and netchange5 > 0 and netchange20 > 0) then 'BUY'
+ when (pctchange < 0 and netchange5 < 0 and netchange20 < 0) then 'SELL'
+end) signal,
+symbol, day, close,change, pctchange, netchange5
+from (
+select
+symbol, day, open, high, low, close,change, pctchange,
+sum(pctchange) over (order by symbol, day rows between 4 preceding and current row) netchange5,
+sum(pctchange) over (order by symbol, day rows between 9 preceding and current row) netchange20,
+volume, sma5, sma20
+from A )
+where 1=1
+--and day =  trunc(sysdate)-1
+and (pctchange < 2)
+and ((pctchange > 0 and netchange5 > 0 and netchange20 > 0)
+     or (pctchange < 0 and netchange5 < 0 and netchange20 < 0))
+order by symbol asc,  day desc;
+
+# ABBV
+# DG
+# HLT@59  / stop@64
+* HUM@255.15 stop  / 235
+    MNK
+    NBR
+#PKI@63
+    XOG
+* CC
+H@56.5
+* OKE
+RGLD start with small position and add on pullbacks
+SYY@51.5
+    CAB
+IRM
+PII on pullback
+AES@11
+    EXPE
+GILD
+    INT
+    KSS
+MTD on pullback only..
+?XPO
+*XYL
+
+
+
+
+CONE,COR, RHT on pullback
+*CPRT, MFA, OSK watch for upmove
+
+
+Aug3rd BUY: ACN,AIG,ARNC,CNP,DE,DUK,ED,ES,HBI,HPQ,ILMN,IRM,KO,LYB,NOC,ORCL,PEP,PFE,PGR,PH,PHM,PNW,PVH,RF,RTN,UNH,WM,WMT
+Earnings next 5 days: aee,brk-b,cboe,ci,dis,pcln,sre
+HPQ,PH,RF,PHM,AIG,ACN,ORCL,LYB
+
+Aug3rd SELL:
+AVGO,bdx,fbhs,ice,pki,pru,RHT,symc,SYY,wmb,wyn
+Earnings prev 5 days: BDX,FBHS,ICE,PKI,PRU,SYMC,WMB,WYN
+AVGO,RHT,SYY
+
+Policy Number: 4179180130
+
+
+
+work in progress version for backtests:
+
+--SELECT * FROM TEST_BS
+-- select * from test_bt;
+
+
+create or replace view test_bt as
+with A as (select * from (
+select  symbol, day, open, high, low, close, (close-prevclose) change,
+trunc(100*(close-prevclose)/prevclose, 1) pctchange,
+volume, sma5, sma20
+from (
+select
+  symbol, day, open, high, low, close,
+  lag(close,1) over (order by symbol,day) prevclose,
+  volume,
+  trunc(avg(volume)
+    OVER (order by symbol,day rows between 4 preceding and current row))
+    as sma5,
+  trunc(avg(volume)
+    OVER (order by symbol,day rows between 9 preceding and current row))
+    as sma20,
+  trunc(avg(close)
+    OVER (order by symbol,day rows between 49 preceding and current row))
+    as psma50,
+  trunc(avg(close)
+    OVER (order by symbol,day rows between 199 preceding and current row))
+    as psma200,
+  row_number() over (partition by symbol order by day desc) rn
+from stocks where 1=1 --and symbol in ('WM','APH')
+)
+where 1=1
+and ((volume > sma5) or (volume > sma20))
+and ((close > psma50) and (close > psma200))
+order by symbol, day desc
+) --where rownum < 30
+)
+/* count numbers of buy or sell signals
+select symbol, sum(case when signal = 'BUY' then 1 else 0 end) bc,
+sum(case when signal = 'SELL' then 1 else 0 end) sc from ( */
+select signal, symbol, day, close, prevclose, change, pctchange, netchange5, cnt, prevcnt,
+  (case when signal = 'SELL' then ((close-nvl(prevclose, close))*(nvl(prevcnt,0)))
+        when signal = 'BUY' then 0 end) netpl,
+  sum((case when signal = 'SELL' then ((close-nvl(prevclose, close))*(nvl(prevcnt,0))) end)) over(partition by symbol) netStock
+from (
+select
+signal, symbol, day, close,
+lag(close, 1) over (partition by symbol order by day) prevclose,
+change, pctchange, netchange5,
+cnt, lag(cnt,1) over(partition by symbol order by day) prevcnt, rnk
+from (
+select signal, symbol, day, close, change, pctchange, netchange5, cnt,
+lag(signal,1) over(partition by symbol order by day) prevsignal,
+rank() over (partition by symbol order by symbol, day) rnk
+from (
+select
+(case
+ when (pctchange > 0 and netchange5 > 0 and netchange20 > 0) then 'BUY'
+ when (pctchange < 0 and netchange5 < 0 and netchange20 < 0) then 'SELL'
+end) signal,
+symbol, day, close, change, pctchange, netchange5, trunc(10000/close) cnt
+from (
+select
+symbol, day, open, high, low, close,change, pctchange,
+sum(pctchange) over (partition by symbol order by day rows between 4 preceding and current row) netchange5,
+sum(pctchange) over (partition by symbol order by day rows between 9 preceding and current row) netchange20,
+volume, sma5, sma20
+from A
+)
+where 1=1
+--and day =  trunc(sysdate)
+and (pctchange < 2)
+and ((pctchange > 0 and netchange5 > 0 and netchange20 > 0)
+     or (pctchange < 0 and netchange5 < 0 and netchange20 < 0))
+  /* count numbers of buy or sell signals
+  ) where day > sysdate-30 group by symbol */
+) ) where signal != prevsignal )
+order by  2,3 desc;
+
+
+
+
+create or replace view test_consecutive_updays as
+select symbol, max(consecutive_upcnt) max_cc_updays from (
+select symbol, day,
+1+count(case when chg = prevchg and chg='UP' then 1 end) over (partition by symbol order by day range between current row and 10 following) consecutive_upcnt
+from (
+select symbol, day, chg,
+ lag(chg, 1) over (partition by symbol order by day) prevchg
+from (
+select symbol, day, open, high, low, close, volume,
+lag(day, 1) over (partition by symbol order by day) prevday,
+lag(close, 1) over (partition by symbol order by day) prevclose,
+close-lag(close, 1) over (partition by symbol order by day) change,
+(case when (close-lag(close, 1) over (partition by symbol order by day))>0 then 'UP' else 'DOWN' end) chg
+from stocks where 1=1
+--and symbol='APH'
+and day between sysdate-15 and sysdate
+group by symbol, day, open, high, low, close, volume
+--order by symbol, day desc
+) group by symbol,day , chg
+order by symbol, day desc
+) )  group by symbol
+having max(consecutive_upcnt) > 4
+
+create or replace view test_avgupdown_ratio_over_time as
+select trunc(avg(updays/downdays),6) avg_updown_ratio from (
+select symbol,
+  sum( case when change > 0 then 1 else 0 end) updays,
+  sum( case when change > 0 then 0 else 1 end) downdays
+from (
+select symbol, day, open, high, low, close, volume,
+lag(day, 1) over (partition by symbol order by day) prevday,
+lag(close, 1) over (partition by symbol order by day) prevclose,
+close-lag(close, 1) over (partition by symbol order by day) change,
+(case when (close-lag(close, 1) over (partition by symbol order by day))>0 then 'UP' else 'DOWN' end) chg
+from stocks
+where day between sysdate-13 and sysdate
+group by symbol, day, open, high, low, close, volume
+--order by symbol, day desc
+) group by symbol) where updays < downdays
+
+
+---------------
+
+
+
+Close is above $5
+Average Volume is above 200000.
+the share price is below the lower bollinger band(20).
+Price is below the MA(15)
+
+[close between 10 and 40 and add column RSI(14)]
+[close between 10 and 40 and add column industry]
+
+[price between 5 and 10 and chart-type is candlestick]
+
+Examples	Price is approaching the moving average(15)
+Price is approaching the EMA(35) from above
+RSI(15) is approaching 30 from below
+
+Price is between $15 and $45.
+The RSI(15) is between 10 and 30
+
+Price trading in a 45 day channel
+Price trading near the bottom of a 60 day channel
+Price trading near the bottom of a decreasing 90 day channel
+
+MA(10) crossed above MA(50)
+Low crossed below the lower bollinger band(20)
+RSI(15) crossed below 30 within the last 3 days
+
+indicator crossed above indicator [within the last #number {days,weeks,months,years}]
+indicator crossed above value [within the last #number {days,weeks,months,years}]
+
+indicator crossed below indicator [within the last #number {days,weeks,months,years}]
+indicator crossed below value [within the last #number {days,weeks,months,years}]
+
+
+
+[MA(50) crossed above MA(200) and date offset is 10]
+
+Price dropped more than 10%
+Price gained between 20 and 25 percent over the last 5 days
+RSI(15) gained 15% in the last 2 days
+
+
+indicator dropped more than value [over the last #number {days,weeks,months,years}]
+indicator dropped less than value [over the last #number {days,weeks,months,years}]
+indicator dropped between value and value [over the last #number {days,weeks,months,years}]
+
+indicator gained more than value [over the last #number {days,weeks,months,years}]
+indicator gained less than value [over the last #number {days,weeks,months,years}]
+indicator gained between value and value [over the last #number {days,weeks,months,years}]
+
+[Show stocks where the MA(10) has been above the MA(50) for the last 5 days]
+[Show stocks where the MA(10) 1 day ago had been below the MA(50) 1 day ago for the last 5 days and the MA(10) crossed above the MA(50)]
+[Show stocks where the close has been below the lower bollinger(20) for the last 3 days]
+[Show stocks where the RSI(14) has been below 30 for the last 5 days]
+
+
+indicator has been above indicator/value for the last number of days
+indicator has been below indicator/value for the last number of days
+
+
+[close decreasing for the last 5 days]
+[close 1 day ago increasing for the last 5 days ago and close is below close 1 day ago]
+[RSI(14) decreasing for the last 4 days]
+
+[Show stocks where the low is near the lower Bollinger band(20)]
+[Show stocks where the low is less than 5% above the lower Bollinger(20) band
+and The low is less than 2% below the lower Bollinger(20) band
+]
+
+
+Price reached a new 52 week high
+MA(150) reached a new 6 month low
+Average Volume(10) reached a new 2 year low within the last 2 weeks
+
+
+indicator reached a new #number {day,week,month,year} high [within the last #number {days,weeks,months,years}]
+indicator reached a new #number {day,week,month,year} low [within the last #number {days,weeks,months,years}]

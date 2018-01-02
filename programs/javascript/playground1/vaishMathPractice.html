@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Mish Mash Vaish</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log("ready!");
+        });
+
+
+        function refresh() {
+            a = Math.floor((Math.random() * 1000) + 1);
+            b = Math.floor((Math.random() * 8) + 2);
+            document.getElementById('a').innerHTML = a;
+            document.getElementById('b').innerHTML = b;
+            document.getElementById('op').innerHTML = '/';
+            document.getElementById('ans').focus();
+        }
+
+        function getRealAnswer() {
+            a = document.getElementById('a').innerHTML;
+            b = document.getElementById('b').innerHTML;
+            realanswer = (a / b);
+            realanswer = Math.round(realanswer * 100) / 100;
+            return realanswer;
+        }
+
+        function validate(form) {
+            a = document.getElementById('a').innerHTML;
+            b = document.getElementById('b').innerHTML;
+            console.log(a);
+            console.log(b);
+            ans = form.ans.value;
+
+            console.log(ans);
+            ansarr = ans.trim().split(' ');
+            youranswer = 0;
+            for (i = 0; i < ansarr.length; i++) {
+                youranswer += eval(ansarr[i]);
+            }
+            // round to 2 decimal places
+            youranswer = Math.round(100 * youranswer) / 100;
+            console.log(youranswer);
+            // get real answer
+            realanswer = (a / b);
+            realanswer = Math.round(realanswer * 100) / 100;
+            console.log(realanswer);
+            if (youranswer == realanswer) {
+                document.getElementById('result').innerHTML = 'CORRECT';
+                document.getElementById('result').style.fontSize = 25;
+                document.getElementById('result').style.color = 'green';
+                $("result").css({
+                    fontSize: "100px",
+                    color: "green"
+                });
+
+
+            } else {
+                document.getElementById('result').innerHTML = 'WRONG';
+                document.getElementById('result').style.fontSize = 25;
+                document.getElementById('result').style.color = 'red';
+                document.getElementById('youranswer').innerHTML = 'You answered : ' + youranswer;
+                document.getElementById('realanswer').innerHTML = 'Correct answer : ' + realanswer;
+
+                $("result").css({
+                    fontSize: "100px",
+                    color: "red"
+                });
+            }
+
+        }
+
+
+        function timedRefresh(timeoutPeriod) {
+            //setTimeout("location.reload(false);", timeoutPeriod);
+            setTimeout("refresh();", timeoutPeriod);
+        }
+        // refresh every 30 sec
+        window.onload = timedRefresh(3000);
+
+        // not used anymore
+        function WhenIntervalHits() {
+            /*            realanswer = getRealAnswer();
+                                    console.log(realanswer + ' is the correct answer');
+
+                        document.getElementById('result').style.fontSize = 25;
+                        document.getElementById('result').style.color = 'red';
+                        document.getElementById('youranswer').innerHTML = 'You didnt answer';
+                        document.getElementById('realanswer').innerHTML = 'Correct answer : ' + realanswer;
+                        wait(2000);
+              */
+            // location.reload(false);
+
+            //alert('TOO LATE');
+            //
+
+            /*            if (ticks == 5) {
+                            clearInterval(clock);
+                            ticks=0;
+                            document.getElementById('result').innerHTML = 'ALL DONE';
+                            document.getElementById('result').style.fontSize = 25;
+                            document.getElementById('result').style.color = 'blue';
+                        } */
+        }
+
+        //var clock = setInterval(WhenIntervalHits,1000);
+
+    </script>
+
+
+</head>
+
+<body onload="refresh()">
+    <form name="arithmaticform" action="" method="get">
+        <span id="a"></span>
+        <span id="op"></span>
+        <span id="b"></span> =
+        <input id="ans" name="ans" type="text">
+        </br>
+        <input id="sub" type="submit" value="Submittoo" onclick="validate(this.form)">
+    </form>
+    <p>
+        <div id="result"> </div>
+    </p>
+    <p>
+        <span id="youranswer"></span>
+        </br>
+        <span id="realanswer"></span>
+    </p>
+</body>
+
+</html>

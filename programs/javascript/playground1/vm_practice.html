@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        function refreshPage() {
+            a = Math.floor((Math.random() * 1000) + 1);
+            b = Math.floor((Math.random() * 8) + 2);
+            $('#a').text(a);
+            $('#b').text(b);
+            $("#ans").focus().val('');
+            totalQuestions++;
+            var scoremsg = correctAnswers + ' out of ' + totalQuestions;
+            $('#score').text(scoremsg);
+
+        }
+
+        function refreshTimer(countDownDate) {
+            var nowDate = new Date().getTime();
+            var distance = countDownDate - nowDate;
+            if (distance <= 0) {
+                clearInterval(refreshInterval);
+                clearInterval(refereshPageInterval);
+                $('#countDownTimer').text("5m Timer Expired.");
+            } else {
+                // Time calculations for days, hours, minutes and seconds
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                console.log('nowdate: ' + nowDate);
+                console.log('to date: ' + countDownDate);
+                $('#countDownTimer').text(minutes + "m " + seconds + "s ");
+            }
+        }
+
+        $(document).ready(
+            function() {
+                correctAnswers = 0;
+                totalQuestions = 0;
+                refreshPage();
+                var nowDate = new Date().getTime();
+                var countDownDate = new Date(nowDate + 300000);
+                // You need these intervals as global variable.
+                refreshInterval = setInterval(function() {
+                    refreshTimer(countDownDate)
+                }, 1000);
+                // Below will change the question in every 30 sec
+                //refereshPageInterval = setInterval(refreshPage, 30000);
+
+            }
+        )
+
+        function checkDivision(a, b, ans) {
+            var realAns = (a / b);
+            realAns = Math.round(realAns * 100) / 100;
+            let ansarr = ans.trim().split(' ');
+            var yourAns = 0;
+            for (i = 0; i < ansarr.length; i++) {
+                yourAns += eval(ansarr[i]);
+            }
+            yourAns = Math.round(100 * yourAns) / 100;
+            console.log(yourAns);
+            console.log(realAns);
+            if (yourAns == realAns) {
+                correctAnswers++;
+                return 0;
+            } else {
+                return realAns;
+            }
+        }
+
+
+        function validateAnswer(e) {
+            // alert('submitted');
+            var a = $('#a').text();
+            var b = $('#b').text();
+            var ans = $('#ans').val();
+            console.log('a = ' + a);
+            console.log('b = ' + b);
+            console.log('ans = ' + ans);
+
+            var valRes = checkDivision(a, b, ans);
+
+            if (valRes == 0) {
+                $("#result").text("You got that right! Good Job!").show().fadeOut(1000);
+                refreshPage();
+                // Old style full page refresh. Not needed now but a technique can be used elsewhere.
+/*                window.setTimeout(function() {
+                    window.location.reload()
+                }, 1000); */
+
+            } else {
+                var msg = "Wrong! The Correct Answer is " + valRes;
+                $("#result").text(msg).show().fadeOut(3000);
+                refreshPage();
+/*                window.setTimeout(function() {
+                    window.location.reload()
+                }, 3000); */
+
+            }
+        };
+
+    </script>
+</head>
+
+<body>
+    <p>
+        Time: <span id="countDownTimer"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Score: <span id="score"> </span>
+    </p>
+    <div id="QuestionBlock1">
+        <!-- question elements goes here  -->
+        <div id="a">a</div>
+        <div id="op">----</div>
+        <div id="b">b</div>
+        <!--div id="eq">=</div -->
+        <input type="text" id="ans" />
+        <input type="submit" value="Submortal" onclick="validateAnswer();" />
+        <p>
+            <div id="result"></div>
+        </p>
+    </div>
+</body>
+
+</html>

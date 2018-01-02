@@ -1,0 +1,59 @@
+<html>
+    <head>
+    <script type="application/javascript">
+        var $ = (id) => {
+            return document.getElementsByTagName(id)
+        }
+    var genData = (limit) => {
+        return Math.floor(limit*Math.random())
+    }
+    var setElementValues = () => {
+//        $("p").innerHTML = 'Data' + genData()
+//        console.log("id value " + document.getElementById("x").innerHTML)
+        var elem = $("td")
+        for (var i=0; elem[i]; ++i){
+            elem[i].innerHTML = genData(100) + '.' + genData(10)
+        }
+    }
+    var setElementStyle = (id) => {
+        color='rgb('+genData(255)+','+genData(255)+','+genData(255)+')'
+        console.log(color)
+        var elem = $("th")
+        for (var i=0;elem[i];++i){
+            console.log('setting elemtn color')
+            elem[i].style.color = color
+        }
+    }
+    var onBodyLoad = () => {
+        setElementStyle("th");
+        setElementValues();
+    }
+        </script>
+    </head>
+    <body onload="onBodyLoad()">
+    <table>
+        <p id="x" style="font-weight: bold">Experiment Results</p>
+        <tr>
+            <th style="color:rgb(121,239,17)">Sample1</th>
+            <th>Sample2</th>
+            <th>Sample3</th>
+        </tr>
+        <tr>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
+        </tr>
+        <tr>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
+        </tr>
+        <tr>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
+        </tr>
+
+        </table>
+    </body>
+</html>

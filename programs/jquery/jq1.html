@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery one</title>
+<!--    <script type="text/javascript" src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+</head>
+<body>
+        <a href="http://jquery.com/">jQuery</a>
+        <p> here some test</p>
+        <div>
+            <p>this is a sentence</p>
+            <p class="super">Here is next line</p>
+            <h4 class="super">This is the last in the never ending series? oxymoron!</h4>
+        </div>
+
+
+    <script type="text/javascript" src="/jquery/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript"> 
+    $(document).ready(function(){ 
+      //  document.write('Hello World!');
+        //$("p").fadeOut(2000)
+        $("p.super").addClass("colorful timestwo");
+        
+        $("a").click(function(e){
+            alert('thanks for visiting');
+            e.preventDefault()
+        })
+    })
+    </script>
+    <ul>
+        <li>apple</li>
+        <li>banana</li>
+        <li>time</li>
+        <li>violin</li>
+        <li></li>
+    </ul>
+    
+</body>
+</html>

@@ -1,0 +1,164 @@
+    <html>
+    <script type="application/javascript">
+        var person = { name : "John"}
+        function printName() { console.log('Printing ' + this.name)}
+        var boundPrintname = printName.bind(person)
+        boundPrintname();
+        printName.call(person)
+
+        var myPerson = {
+            firstname: 'Vijay',
+            lastname: 'Kumar',
+            fullname : function(){
+            return this.firstname + ' ' + this.lastname
+            }
+        }
+        console.log(myPerson.fullname())
+        function greet(name){ return "Hello " + name}
+        console.log(greet("Vaish"))
+
+        var callback=function() {console.log('timer complete')}
+        //setTimeout(callback, 5000)
+        //setTimeout(function() {console.log('done')}, 2000)
+        //confirm('Confirmation')
+        //prompt("prompting")
+        //alert("alerting")
+        var emtpyObj={}
+        var personObj={
+            firstName:'Apple',
+            lastName:'Bee',
+            message : function callme() { return 'hi'}
+        }
+        personObj.age=23
+        personObj['salary']=14000
+        for (var m in personObj) {
+            if (personObj.hasOwnProperty(m)){
+                console.log('the member ' + m + ' of obj is ' + personObj[m])
+            }
+        }
+        var i = 9;
+        while (true) {
+            console.log(i + 'bottles of beer on the wall')
+            i -= 1
+            if (i==0) break
+        }
+        var myArray=[]
+        myArray[3]='hello'
+        console.log(myArray)
+
+        // Protype demo:
+        // object defintion precedes prototype.
+        function Person(name, age) {
+            this.name=name;
+            this.age=age;
+            /*this.descirbe = function () {
+                return this.name + ' of ' + this.age + ' years old!'
+            } */
+        }
+
+        Person.prototype.descirbe = function(){
+            return this.name + ' is ' + this.age + ' years old.'
+        }
+        var p = new Person('Vijay',44)
+        console.log(p.descirbe())
+
+
+        // Inheritance example
+        var Person = function () {}
+        Person.prototype.intialize = function(name, age){
+            this.name = name;
+            this.age = age;
+        }
+        Person.prototype.describe = function() {
+            console.log(this.name + ', ' + this.age + ' years old!')
+        }
+
+        var Student = function() {}
+        Student.prototype = new Person()
+        Student.prototype.learn = function(subject) {
+            console.log(this.name + ' is learning ' + subject)
+        }
+
+        var me = new Student()
+        me.intialize('Vijay', 43)
+        me.describe()
+        me.learn('AI')
+
+
+    </script>
+
+    <body>
+
+        <h3>My Links</h3>
+        <a href="http://roxburylibrary.org/">Roxbury Public Library</a> <br />
+        <a href="http://www.gooogle.com/">Google link</a > <br />
+        <a href="#SEC2">Jump to Section2</a>
+
+        <hr />
+        <h3>My To Do List:</h3>
+        <p>Here is a list of things I want to do today:</p>
+    <ol type="A">
+        <li>Dinner</li>
+          <ol type="i">
+              <li>Eat chapatti</li>
+              <li>Eat yougurt</li>
+              <li> eat a fruit</li>
+        </ol>
+        <li>Draw</li>
+        <ul style="list-style-type: square"> <li>ice cream</li>
+            <li>pizza</li>
+            <li>tree</li>
+
+
+        </ul>
+        <li>Brush teeth</li>
+        <ul> <li> While avoing my top gum!OUCHIEEE!! </li> </ul>
+
+        <li>Goo to bed</li>
+        <ul>
+            <li>Nice advertisement, Kattappa. Heeheehee!</li>
+            
+        </ul>
+    </ol>
+
+            <h1>My First Page</h1>
+    <hr />
+        <h2> chapter 1</h2>
+            <p>This is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.</p>
+        <p> is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first 
+        </p>
+
+                           <h2> chapter 2</h2>
+        <hr />
+    <p> this is chaeteer two</p>
+            <h2 id="SEC2">A secondary header.</h2>
+            <p>Some more text.</p><hr />
+
+        <h3>My Dad Huffing and Puffing</h3>
+        <img src="dadrun.jpg" width="200" height="300" 
+             style="float: left;"
+             alt="my dady at roxbury race finish linke"/>
+        <p>is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first page.his is my first </p>
+
+        </body>
+
+
+
+    </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
