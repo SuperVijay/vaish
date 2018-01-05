@@ -12,6 +12,16 @@
             totalQuestions++;
             var scoremsg = correctAnswers + ' out of ' + totalQuestions;
             $('#score').text(scoremsg);
+        
+       /* $('#ans').keypress(function (e) {
+  if (e.which == 13) {
+      //validateAnswer();
+          $('#submortal').click();
+
+    return false;    //<---- Add this line
+  }
+});
+*/
 
         }
 
@@ -20,16 +30,17 @@
             var distance = countDownDate - nowDate;
             if (distance <= 0) {
                 clearInterval(refreshInterval);
-                clearInterval(refereshPageInterval);
-                $('#countDownTimer').text("5m Timer Expired.");
+                //clearInterval(refereshPageInterval);
+                $('#countDownTimer').text("5m TIMER EXPIRED!");
+                $("#submortal").prop('disabled', true);
             } else {
                 // Time calculations for days, hours, minutes and seconds
                 var days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                console.log('nowdate: ' + nowDate);
-                console.log('to date: ' + countDownDate);
+                //console.log('nowdate: ' + nowDate);
+                //console.log('to date: ' + countDownDate);
                 $('#countDownTimer').text(minutes + "m " + seconds + "s ");
             }
         }
@@ -40,7 +51,7 @@
                 totalQuestions = 0;
                 refreshPage();
                 var nowDate = new Date().getTime();
-                var countDownDate = new Date(nowDate + 300000);
+                var countDownDate = new Date(nowDate + 600000);
                 // You need these intervals as global variable.
                 refreshInterval = setInterval(function() {
                     refreshTimer(countDownDate)
@@ -116,7 +127,7 @@
         <div id="b">b</div>
         <!--div id="eq">=</div -->
         <input type="text" id="ans" />
-        <input type="submit" value="Submortal" onclick="validateAnswer();" />
+        <input type="submit" id="submortal" value="Submit" onclick="validateAnswer();" />
         <p>
             <div id="result"></div>
         </p>
